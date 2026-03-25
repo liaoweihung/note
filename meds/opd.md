@@ -5,7 +5,7 @@
 
 ### 1️⃣ 核心圖卡
 
-![戒菸藥物全攻略圖卡](../img/smoking_cession.jpg ":width=100%")
+![戒菸藥物全攻略圖卡](../img/smoking_cessation.png ":width=100%")
 
 ---
 
@@ -19,4 +19,4 @@
 
 ### 📥 完整資源下載
 
-<a href="[#](https://drive.google.com/file/d/1-FqPWd_XNIaidWZj0dG_q_txaPfUPCN0/view?usp=sharing)" class="download-btn">📥 下載完整投影片 (PDF)</a>
+<a href="https://drive.google.com/file/d/18ORmIQGfAdASBtkctutQUPKR0GZ-WR9T/view?usp=sharing" class="download-btn">📥 下載圖片</a>
