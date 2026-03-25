@@ -5,7 +5,7 @@
 
 ### 1️⃣ 核心圖卡
 
-![戒菸藥物全攻略圖卡](../images/smokingcession.jpg ":width=100%")
+![戒菸藥物全攻略圖卡](../img/smoking_cession.jpg ":width=100%")
 
 ---
 
