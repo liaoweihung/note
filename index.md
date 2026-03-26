@@ -21,6 +21,31 @@ title: 首頁
   </li>
 
   {% if forloop.index == 8 %}
+    {% assign all_tags = "" | split: "" %}
+    {% for post in site.meds %}
+      {% if post.tags %}
+        {% assign all_tags = all_tags | concat: post.tags %}
+      {% endif %}
+    {% endfor %}
+    {% assign unique_tags = all_tags | uniq %}
+
+    <div style="margin: 40px 0; padding: 20px; background: #f7fafc; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+      <h3 style="margin-top: 0; color: #4a5568; font-size: 1.1em;">🏷️ 探索更多主題標籤</h3>
+      <div style="line-height: 2.2;">
+        {% for tag in unique_tags %}
+          {% assign tag_count = 0 %}
+          {% for post in site.meds %}
+            {% if post.tags contains tag %}
+              {% assign tag_count = tag_count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+          <a href="{{ '/tags/' | relative_url }}#{{ tag }}" style="display: inline-block; background: white; border: 1px solid #cbd5e0; color: #2d3748; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 0.9em; margin-right: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: background 0.2s;">
+            {{ tag }} <span style="color: #a0aec0; font-size: 0.85em;">({{ tag_count }})</span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
     <div style="margin: 40px 0; padding: 20px; background: #f7fafc; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
       <h3 style="margin-top: 0; color: #4a5568; font-size: 1.1em;">🏷️ 探索更多主題標籤</h3>
       <div style="line-height: 2.2;">
