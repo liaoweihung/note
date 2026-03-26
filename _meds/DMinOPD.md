@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 糖尿病藥物快速介紹
-category: 門診
+category: 投影片
 tags: [糖尿病]
 date: 2026-02-28
 ---
