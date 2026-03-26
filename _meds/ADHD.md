@@ -9,7 +9,7 @@ tags: [門診, ADHD, 圖卡]
 
 > 💡 ADHD用藥速查
 
-![小兒抗生素圖卡](../img/ADHD.png)
+![ADHD用藥速查圖卡](../img/ADHD.png)
 
 
 ---
