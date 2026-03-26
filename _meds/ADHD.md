@@ -7,9 +7,9 @@ tags: [門診, ADHD, 圖卡]
 
 # {{ page.title }}
 
-> 💡 ADHD用藥速查
+> 💡 ADHD長效 短效 副作用 簡單比較圖
 
-![ADHD用藥速查圖卡](../img/ADHD.png)
+![ADHD用藥速查圖卡](/note/img/ADHD.png)
 
 
 ---
