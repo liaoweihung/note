@@ -1,6 +1,6 @@
 ---
 layout: default
-title: MTX跨科別應用
+title: MTX跨科別應用-風免科，婦產科，腫瘤科
 category: 圖卡
 tags: [門診, MTX, ]
 ---
