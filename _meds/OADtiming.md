@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 糖尿病服藥時間
-category: 門診
+category: 圖卡
 tags: [糖尿病, OAD, 服藥時間, ]
 ---
 
