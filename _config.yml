@@ -1,0 +1,7 @@
+title: 藥師自我學習資料分享
+author: DiamondL
+# 宣告自訂資料夾 _meds
+collections:
+  meds:
+    output: true
+    permalink: /meds/:title/
