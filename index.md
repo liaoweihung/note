@@ -10,7 +10,6 @@ title: 首頁
 ---
 
 ### 🔖 最新收錄列表
-
 <ul>
 {% for post in site.meds %}
   <li style="margin-bottom: 15px; list-style-type: none; display: flex; align-items: center;">
