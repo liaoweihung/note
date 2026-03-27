@@ -19,7 +19,23 @@
     .tag { background: #e2e8f0; padding: 3px 8px; border-radius: 12px; font-size: 0.85em; margin-right: 5px; color: #4a5568;}
     
     /* 頁尾區塊設定 */
-    .site-footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; }
+    .site-footer { 
+      margin-top: 50px; 
+      padding-top: 20px; 
+      border-top: 1px solid #edf2f7; /* 分隔線顏色調淡 */
+      text-align: center; 
+      font-size: 0.75em; /* 👈 關鍵：設定為 0.75em，比標籤小 */
+      color: #a0aec0; /* 👈 字體顏色調成低調的淺灰 */
+      line-height: 1.8;
+    }
+    .site-footer a {
+      color: #a0aec0; /* 讓版權宣告的超連結也變成淺灰色 */
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .site-footer a:hover {
+      color: #718096; /* 滑鼠游標移過去時稍微變深一點點 */
+    }
   </style>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T5R33JYTC0"></script>
