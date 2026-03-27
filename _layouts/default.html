@@ -81,6 +81,22 @@
     <p><small>本站內容僅供專業人士自修參考，不保證內容更新與正確性，請自行查核。</small></p>
     <p><a href="https://liaoweihung.github.io/hub/index.html">&copy; 2026 💎 DiamondL 藥師開發設計</a></p>
   </footer>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // 自動尋找網頁中所有包含 "drive.google.com" 的超連結
+      var driveLinks = document.querySelectorAll('a[href*="drive.google.com"]');
+      
+      driveLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+          // 當有人點擊時，發送自訂事件給 GA4
+          gtag('event', 'drive_download_click', {
+            'link_url': link.href,         // 紀錄點擊的雲端硬碟網址
+            'link_text': link.innerText,   // 紀錄按鈕或連結上的文字 (例如: 下載投影片)
+            'page_title': document.title   // 紀錄這是在哪一篇文章被點擊的
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>
