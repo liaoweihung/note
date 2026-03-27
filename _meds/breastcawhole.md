@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "乳癌治療全人照護 :手術、化療、標靶、營養、運動"
-category: "簡報投影片"
+category: "投影片"
 date: 2026-03-27
 tags: [乳癌, 癌症, 化療, 標靶]
 ---
