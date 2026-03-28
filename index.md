@@ -82,6 +82,69 @@ title: 首頁
         }
       }
     </script>
+    <div style="margin: 30px 0;">
+  <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋標題、分類或標籤..." style="width: 100%; padding: 15px 20px; font-size: 1.1em; border: 2px solid #cbd5e0; border-radius: 8px; outline: none; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: border-color 0.2s;">
+</div>
+
+<ul id="search-results" style="padding: 0; display: none;"></ul>
+
+<script>
+  // 1. 讓 Jekyll 幫我們把所有文章資料打包成 JavaScript 陣列
+  const posts = [
+    {% for post in site.meds %}
+    {
+      title: "{{ post.title | escape }}",
+      url: "{{ post.url | relative_url }}",
+      category: "{{ post.category | escape }}",
+      tags: "{{ post.tags | join: ' ' | escape }}",
+      date: "{{ post.date | date: '%Y-%m-%d' }}"
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+  const originalList = document.getElementById('original-list');
+
+  // 2. 監聽輸入框的打字動作
+  searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+
+    // 如果搜尋框是空的，顯示原本的列表，隱藏搜尋結果
+    if (query === '') {
+      searchResults.style.display = 'none';
+      if (originalList) originalList.style.display = 'block';
+      return;
+    }
+
+    // 開始搜尋：隱藏原本的列表，打開搜尋結果區塊
+    searchResults.style.display = 'block';
+    if (originalList) originalList.style.display = 'none';
+
+    // 3. 過濾資料：比對標題、標籤或分類
+    const filtered = posts.filter(post => {
+      return post.title.toLowerCase().includes(query) ||
+             post.tags.toLowerCase().includes(query) ||
+             post.category.toLowerCase().includes(query);
+    });
+
+    // 4. 將結果印到畫面上
+    if (filtered.length === 0) {
+      searchResults.innerHTML = '<li style="list-style: none; text-align: center; color: #a0aec0; padding: 20px; background: #fdfdfd; border-radius: 8px;">找不到相關內容 😢</li>';
+    } else {
+      searchResults.innerHTML = filtered.map(post => `
+        <li style="margin-bottom: 15px; list-style-type: none; display: flex; align-items: center; padding: 8px 0; border-bottom: 1px dashed #edf2f7;">
+          <strong><a href="${post.url}" style="font-size: 1.2em; text-decoration: none; color: #3182ce;">${post.title}</a></strong>
+          <span style="color: #718096; font-size: 0.85em; background: #edf2f7; padding: 3px 8px; border-radius: 6px; margin-left: 12px;">${post.category}</span>
+        </li>
+      `).join('');
+    }
+  });
+
+  // 點擊搜尋框時有變色效果，增加質感
+  searchInput.addEventListener('focus', () => searchInput.style.borderColor = '#3182ce');
+  searchInput.addEventListener('blur', () => searchInput.style.borderColor = '#cbd5e0');
+</script>
   {% endif %}
   {% endfor %}
 </ul>
