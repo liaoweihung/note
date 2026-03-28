@@ -13,7 +13,18 @@ title: 首頁
 
 <ul>
 {% assign sorted_meds = site.meds | sort: 'date' | reverse %}
-
+<div id="original-list">
+  <ul>
+  {% for post in sorted_meds %}
+    <li style="margin-bottom: 15px; list-style-type: none; display: flex; align-items: center;">
+      <strong><a href="{{ post.url | relative_url }}" style="font-size: 1.2em; text-decoration: none; color: #3182ce;">{{ post.title }}</a></strong>
+      <span style="color: #718096; font-size: 0.85em; background: #edf2f7; padding: 3px 8px; border-radius: 6px; margin-left: 12px; font-weight: normal;">
+        {{ post.category }}
+      </span>
+    </li>
+  {% endfor %}
+  </ul>
+</div>
 {% for post in sorted_meds %}
   <li style="margin-bottom: 15px; list-style-type: none; display: flex; align-items: center;">
     <strong><a href="{{ post.url | append: tag | relative_url }}" style="font-size: 1.2em; text-decoration: none; color: #3182ce;">{{ post.title }}</a></strong>
