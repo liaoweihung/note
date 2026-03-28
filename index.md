@@ -45,7 +45,12 @@ title: 首頁
           <div id="tagList" style="margin-top: 20px; display: none;">
             
             <div style="margin-bottom: 20px;">
-              <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋標題、分類或標籤..." style="width: 100%; padding: 12px 15px; font-size: 1em; border: 2px solid #cbd5e0; border-radius: 8px; outline: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); transition: border-color 0.2s;">
+              <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋標題、分類或標籤..." style="width: 100%; padding: 12px 15px; font-size: 1em; border: 2px solid #cbd5e0; border-radius: 8px; outline: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); transition: border-color 0.2s; margin-bottom: 10px;">
+              
+              <label style="font-size: 0.9em; color: #4a5568; display: flex; align-items: center; cursor: pointer; width: fit-content;">
+                <input type="checkbox" id="search-content-cb" style="margin-right: 8px; transform: scale(1.2); cursor: pointer;">
+                🔲 包含「內文筆記」深度搜尋 (勾選後可搜尋細節)
+              </label>
             </div>
 
             <ul id="search-results" style="padding: 0; display: none; margin-bottom: 20px;"></ul>
@@ -79,6 +84,9 @@ title: 首頁
   function toggleTags() {
     var list = document.getElementById("tagList");
     var btn = document.getElementById("tagToggleBtn");
+    var searchInput = document.getElementById('search-input');
+    var searchCb = document.getElementById('search-content-cb');
+
     if (list.style.display === "none") {
       list.style.display = "block";
       btn.innerHTML = "收起 ▲";
@@ -87,10 +95,12 @@ title: 首頁
       list.style.display = "none";
       btn.innerHTML = "展開 ▼";
       btn.style.backgroundColor = "white"; 
-      // 點擊收起時，順便把搜尋框清空，讓文章列表恢復原狀
-      if(document.getElementById('search-input')) {
-        document.getElementById('search-input').value = "";
-        document.getElementById('search-input').dispatchEvent(new Event('input'));
+      
+      // 收起時，清空搜尋框並取消內文搜尋的打勾，讓一切恢復預設狀態
+      if(searchInput) {
+        searchInput.value = "";
+        searchCb.checked = false; 
+        searchInput.dispatchEvent(new Event('input'));
       }
     }
   }
@@ -102,38 +112,48 @@ title: 首頁
       title: "{{ post.title | escape }}",
       url: "{{ post.url | relative_url }}",
       category: "{{ post.category | escape }}",
-      tags: "{{ post.tags | join: ' ' | escape }}"
+      tags: "{{ post.tags | join: ' ' | escape }}",
+      // 將內文的 HTML 標籤與換行濾除後打包進來
+      content: {{ post.content | strip_html | strip_newlines | jsonify }}
     }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   ];
 
   const searchInput = document.getElementById('search-input');
   const searchResults = document.getElementById('search-results');
-  // 抓出所有帶有 post-item 的文章
   const postItems = document.querySelectorAll('.post-item');
   const tagsContainer = document.getElementById('tags-container');
+  const searchContentCb = document.getElementById('search-content-cb');
 
   if(searchInput) {
-    searchInput.addEventListener('input', function() {
-      const query = this.value.toLowerCase().trim();
+    // 獨立出一個「執行搜尋」的函數，讓打字跟打勾都可以呼叫它
+    function performSearch() {
+      const query = searchInput.value.toLowerCase().trim();
+      const includeContent = searchContentCb.checked;
 
       if (query === '') {
         searchResults.style.display = 'none';
-        // 恢復顯示所有文章
         postItems.forEach(item => item.style.display = 'flex');
         if (tagsContainer) tagsContainer.style.display = 'block';
         return;
       }
 
       searchResults.style.display = 'block';
-      // 當開始打字時，隱藏所有原本的文章與標籤，只留下百寶箱外框與搜尋結果
       postItems.forEach(item => item.style.display = 'none');
       if (tagsContainer) tagsContainer.style.display = 'none';
 
       const filtered = posts.filter(post => {
-        return post.title.toLowerCase().includes(query) ||
-               post.tags.toLowerCase().includes(query) ||
-               post.category.toLowerCase().includes(query);
+        // 基本比對：標題、標籤、分類
+        const matchBasic = post.title.toLowerCase().includes(query) ||
+                           post.tags.toLowerCase().includes(query) ||
+                           post.category.toLowerCase().includes(query);
+        
+        // 如果有打勾，就額外比對內文
+        if (includeContent) {
+          return matchBasic || (post.content && post.content.toLowerCase().includes(query));
+        } else {
+          return matchBasic;
+        }
       });
 
       if (filtered.length === 0) {
@@ -145,6 +165,16 @@ title: 首頁
             <span style="color: #718096; font-size: 0.8em; background: #edf2f7; padding: 3px 8px; border-radius: 6px; margin-left: auto;">${post.category}</span>
           </li>
         `).join('');
+      }
+    }
+
+    // 當輸入框打字時，觸發搜尋
+    searchInput.addEventListener('input', performSearch);
+
+    // 當打勾或取消打勾時，如果搜尋框裡面有字，就瞬間重新搜尋
+    searchContentCb.addEventListener('change', function() {
+      if (searchInput.value.trim() !== '') {
+        performSearch();
       }
     });
 
