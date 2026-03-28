@@ -9,10 +9,6 @@ title: 首頁
 
 ---
 
-<div style="margin: 30px 0;">
-  <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋標題、分類或標籤..." style="width: 100%; padding: 15px 20px; font-size: 1.1em; border: 2px solid #cbd5e0; border-radius: 8px; outline: none; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: border-color 0.2s;">
-</div>
-
 <ul id="search-results" style="padding: 0; display: none;"></ul>
 
 <div id="original-list">
@@ -40,47 +36,54 @@ title: 首頁
 
 <div style="margin: 40px 0; padding: 20px; background: #f7fafc; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
   <div style="display: flex; justify-content: space-between; align-items: center;">
-    <h3 style="margin: 0; color: #4a5568; font-size: 1.1em;">🏷️ 探索更多主題標籤</h3>
+    <h3 style="margin: 0; color: #4a5568; font-size: 1.1em;">🏷️ 更多主題標籤或搜尋本站</h3>
     <button onclick="toggleTags()" id="tagToggleBtn" style="background: white; border: 1px solid #cbd5e0; color: #4a5568; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9em; font-weight: bold; transition: background 0.2s;">
-      展開標籤 ▼
+      展開 ▼
     </button>
   </div>
 
-  <div id="tagList" style="line-height: 2.2; margin-top: 20px; display: none;">
-    {% for tag in unique_tags %}
-      {% if tag != "" %}
-        {% assign tag_count = 0 %}
-        {% for p2 in site.meds %}
-          {% if p2.tags contains tag %}
-            {% assign tag_count = tag_count | plus: 1 %}
-          {% endif %}
-        {% endfor %}
-        <a href="{{ '/tags/' | relative_url }}#{{ tag }}" style="display: inline-block; background: white; border: 1px solid #cbd5e0; color: #2d3748; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 0.9em; margin-right: 8px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: background 0.2s;">
-          {{ tag }} <span style="color: #a0aec0; font-size: 0.85em;">({{ tag_count }})</span>
-        </a>
-      {% endif %}
-    {% endfor %}
+  <div id="tagList" style="margin-top: 20px; display: none;">
+    
+    <div style="margin-bottom: 25px;">
+      <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋標題、分類或標籤..." style="width: 100%; padding: 12px 15px; font-size: 1em; border: 2px solid #cbd5e0; border-radius: 8px; outline: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); transition: border-color 0.2s;">
+    </div>
+
+    <div style="line-height: 2.2;">
+      {% for tag in unique_tags %}
+        {% if tag != "" %}
+          {% assign tag_count = 0 %}
+          {% for p2 in site.meds %}
+            {% if p2.tags contains tag %}
+              {% assign tag_count = tag_count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+          <a href="{{ '/tags/' | relative_url }}#{{ tag }}" style="display: inline-block; background: white; border: 1px solid #cbd5e0; color: #2d3748; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 0.9em; margin-right: 8px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: background 0.2s;">
+            {{ tag }} <span style="color: #a0aec0; font-size: 0.85em;">({{ tag_count }})</span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
   </div>
 </div>
 
 <script>
-  // --- 標籤雲收合功能 ---
+  // --- 標籤雲與搜尋框收合功能 ---
   function toggleTags() {
     var list = document.getElementById("tagList");
     var btn = document.getElementById("tagToggleBtn");
     if (list.style.display === "none") {
       list.style.display = "block";
-      btn.innerHTML = "收起標籤 ▲";
+      btn.innerHTML = "收起 ▲";
       btn.style.backgroundColor = "#edf2f7"; 
     } else {
       list.style.display = "none";
-      btn.innerHTML = "展開標籤 ▼";
+      btn.innerHTML = "展開 ▼";
       btn.style.backgroundColor = "white"; 
     }
   }
 
-  // --- 搜尋引擎功能 ---
-  // 讓 Jekyll 把文章資料打包給 JS
+  // --- 即時搜尋引擎功能 ---
   const posts = [
     {% for post in site.meds %}
     {
