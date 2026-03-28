@@ -9,66 +9,73 @@ title: 首頁
 
 ---
 
-<ul id="search-results" style="padding: 0; display: none;"></ul>
+<h3 style="color: #4a5568; margin-bottom: 20px;">🔖 最新收錄列表</h3>
 
-<div id="original-list">
-  <h3 style="color: #4a5568; margin-bottom: 20px;">🔖 最新收錄列表</h3>
-  <ul style="padding-left: 0;">
+<ul style="padding-left: 0; margin-top: 0;">
+
   {% assign sorted_meds = site.meds | sort: 'date' | reverse %}
+  
+  {% assign raw_tags = "" %}
+  {% for p in site.meds %}
+    {% for t in p.tags %}
+      {% assign raw_tags = raw_tags | append: t | append: "|||" %}
+    {% endfor %}
+  {% endfor %}
+  {% assign unique_tags = raw_tags | split: "|||" | uniq %}
+
   {% for post in sorted_meds %}
-    <li style="margin-bottom: 15px; list-style-type: none; display: flex; align-items: center;">
+  
+    <li class="post-item" style="margin-bottom: 15px; list-style-type: none; display: flex; align-items: center;">
       <strong><a href="{{ post.url | relative_url }}" style="font-size: 1.2em; text-decoration: none; color: #3182ce;">{{ post.title }}</a></strong>
       <span style="color: #718096; font-size: 0.85em; background: #edf2f7; padding: 3px 8px; border-radius: 6px; margin-left: 12px; font-weight: normal;">
         {{ post.category }}
       </span>
     </li>
+
+    {% if forloop.index == 7 %}
+      <li style="list-style-type: none; margin: 40px 0;">
+        <div style="padding: 20px; background: #f7fafc; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; color: #4a5568; font-size: 1.1em;">🏷️ 更多主題標籤或搜尋本站</h3>
+            <button onclick="toggleTags()" id="tagToggleBtn" style="background: white; border: 1px solid #cbd5e0; color: #4a5568; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9em; font-weight: bold; transition: background 0.2s;">
+              展開 ▼
+            </button>
+          </div>
+
+          <div id="tagList" style="margin-top: 20px; display: none;">
+            
+            <div style="margin-bottom: 20px;">
+              <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋標題、分類或標籤..." style="width: 100%; padding: 12px 15px; font-size: 1em; border: 2px solid #cbd5e0; border-radius: 8px; outline: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); transition: border-color 0.2s;">
+            </div>
+
+            <ul id="search-results" style="padding: 0; display: none; margin-bottom: 20px;"></ul>
+
+            <div id="tags-container" style="line-height: 2.2;">
+              {% for tag in unique_tags %}
+                {% if tag != "" %}
+                  {% assign tag_count = 0 %}
+                  {% for p2 in site.meds %}
+                    {% if p2.tags contains tag %}
+                      {% assign tag_count = tag_count | plus: 1 %}
+                    {% endif %}
+                  {% endfor %}
+                  <a href="{{ '/tags/' | relative_url }}#{{ tag }}" style="display: inline-block; background: white; border: 1px solid #cbd5e0; color: #2d3748; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 0.9em; margin-right: 8px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: background 0.2s;">
+                    {{ tag }} <span style="color: #a0aec0; font-size: 0.85em;">({{ tag_count }})</span>
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+          </div>
+        </div>
+      </li>
+    {% endif %}
+
   {% endfor %}
-  </ul>
-</div>
-
-{% assign raw_tags = "" %}
-{% for p in site.meds %}
-  {% for t in p.tags %}
-    {% assign raw_tags = raw_tags | append: t | append: "|||" %}
-  {% endfor %}
-{% endfor %}
-{% assign unique_tags = raw_tags | split: "|||" | uniq %}
-
-<div style="margin: 40px 0; padding: 20px; background: #f7fafc; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <h3 style="margin: 0; color: #4a5568; font-size: 1.1em;">🏷️ 更多主題標籤或搜尋本站</h3>
-    <button onclick="toggleTags()" id="tagToggleBtn" style="background: white; border: 1px solid #cbd5e0; color: #4a5568; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9em; font-weight: bold; transition: background 0.2s;">
-      展開 ▼
-    </button>
-  </div>
-
-  <div id="tagList" style="margin-top: 20px; display: none;">
-    
-    <div style="margin-bottom: 25px;">
-      <input type="text" id="search-input" placeholder="🔍 輸入關鍵字搜尋標題、分類或標籤..." style="width: 100%; padding: 12px 15px; font-size: 1em; border: 2px solid #cbd5e0; border-radius: 8px; outline: none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); transition: border-color 0.2s;">
-    </div>
-
-    <div style="line-height: 2.2;">
-      {% for tag in unique_tags %}
-        {% if tag != "" %}
-          {% assign tag_count = 0 %}
-          {% for p2 in site.meds %}
-            {% if p2.tags contains tag %}
-              {% assign tag_count = tag_count | plus: 1 %}
-            {% endif %}
-          {% endfor %}
-          <a href="{{ '/tags/' | relative_url }}#{{ tag }}" style="display: inline-block; background: white; border: 1px solid #cbd5e0; color: #2d3748; padding: 4px 12px; border-radius: 20px; text-decoration: none; font-size: 0.9em; margin-right: 8px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: background 0.2s;">
-            {{ tag }} <span style="color: #a0aec0; font-size: 0.85em;">({{ tag_count }})</span>
-          </a>
-        {% endif %}
-      {% endfor %}
-    </div>
-    
-  </div>
-</div>
+</ul>
 
 <script>
-  // --- 標籤雲與搜尋框收合功能 ---
+  // --- 收合按鈕功能 ---
   function toggleTags() {
     var list = document.getElementById("tagList");
     var btn = document.getElementById("tagToggleBtn");
@@ -80,6 +87,11 @@ title: 首頁
       list.style.display = "none";
       btn.innerHTML = "展開 ▼";
       btn.style.backgroundColor = "white"; 
+      // 點擊收起時，順便把搜尋框清空，讓文章列表恢復原狀
+      if(document.getElementById('search-input')) {
+        document.getElementById('search-input').value = "";
+        document.getElementById('search-input').dispatchEvent(new Event('input'));
+      }
     }
   }
 
@@ -97,7 +109,9 @@ title: 首頁
 
   const searchInput = document.getElementById('search-input');
   const searchResults = document.getElementById('search-results');
-  const originalList = document.getElementById('original-list');
+  // 抓出所有帶有 post-item 的文章
+  const postItems = document.querySelectorAll('.post-item');
+  const tagsContainer = document.getElementById('tags-container');
 
   if(searchInput) {
     searchInput.addEventListener('input', function() {
@@ -105,12 +119,16 @@ title: 首頁
 
       if (query === '') {
         searchResults.style.display = 'none';
-        if (originalList) originalList.style.display = 'block';
+        // 恢復顯示所有文章
+        postItems.forEach(item => item.style.display = 'flex');
+        if (tagsContainer) tagsContainer.style.display = 'block';
         return;
       }
 
       searchResults.style.display = 'block';
-      if (originalList) originalList.style.display = 'none';
+      // 當開始打字時，隱藏所有原本的文章與標籤，只留下百寶箱外框與搜尋結果
+      postItems.forEach(item => item.style.display = 'none');
+      if (tagsContainer) tagsContainer.style.display = 'none';
 
       const filtered = posts.filter(post => {
         return post.title.toLowerCase().includes(query) ||
@@ -119,12 +137,12 @@ title: 首頁
       });
 
       if (filtered.length === 0) {
-        searchResults.innerHTML = '<li style="list-style: none; text-align: center; color: #a0aec0; padding: 20px; background: #fdfdfd; border-radius: 8px;">找不到相關內容 😢</li>';
+        searchResults.innerHTML = '<li style="list-style: none; text-align: center; color: #a0aec0; padding: 20px; background: #fff; border: 1px dashed #cbd5e0; border-radius: 8px;">找不到相關內容 😢</li>';
       } else {
         searchResults.innerHTML = filtered.map(post => `
-          <li style="margin-bottom: 15px; list-style-type: none; display: flex; align-items: center; padding: 8px 0; border-bottom: 1px dashed #edf2f7;">
-            <strong><a href="${post.url}" style="font-size: 1.2em; text-decoration: none; color: #3182ce;">${post.title}</a></strong>
-            <span style="color: #718096; font-size: 0.85em; background: #edf2f7; padding: 3px 8px; border-radius: 6px; margin-left: 12px;">${post.category}</span>
+          <li style="margin-bottom: 10px; list-style-type: none; display: flex; align-items: center; padding: 12px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <strong><a href="${post.url}" style="font-size: 1.1em; text-decoration: none; color: #3182ce;">${post.title}</a></strong>
+            <span style="color: #718096; font-size: 0.8em; background: #edf2f7; padding: 3px 8px; border-radius: 6px; margin-left: auto;">${post.category}</span>
           </li>
         `).join('');
       }
