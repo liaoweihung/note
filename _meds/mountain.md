@@ -2,7 +2,7 @@
 layout: default
 title: 爬山後肌肉痠痛與止痛藥
 category: 圖卡
-tags: [民眾衛教,止痛藥,NSAID]
+tags: [衛教,止痛藥,NSAID]
 date: 2026-03-18
 ---
 
