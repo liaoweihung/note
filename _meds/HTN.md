@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 高血壓治療邏輯與處方審核
-category: 圖卡
+category: 投影片
 tags: [高血壓,]
 date: 2026-03-26
 ---
