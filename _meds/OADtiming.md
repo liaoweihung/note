@@ -2,7 +2,7 @@
 layout: default
 title: 糖尿病用藥服藥時間:餐前，餐後，隨餐，每日固定
 category: 圖卡
-tags: [糖尿病,病人衛教]
+tags: [糖尿病,衛教]
 date: 2026-03-17
 ---
 
