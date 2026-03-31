@@ -3,7 +3,7 @@ layout: default
 title: 調經藥原理
 category: 投影片
 tags: [婦產科,避孕藥,]
-date: 2026-03-31
+date: 2026-03-30
 ---
 
 > 💡 **摘要**：調經藥的臨床使用原理
