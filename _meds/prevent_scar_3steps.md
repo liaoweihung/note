@@ -8,5 +8,5 @@ date: 2026-04-12
 
 > 💡 **摘要**：傷口好了之後，要如何減少疤痕呢? 
 
-![預覽](/pteduing/img/prevent_scar.png)
+![預覽](/pteduimg/img/prevent_scar.png)
 
