@@ -2,7 +2,7 @@
 layout: default
 title: 預防傷口疤痕三步驟
 category: 圖卡
-tags: [傷口,疤痕]
+tags: [傷口,疤痕,衛教]
 date: 2026-04-12
 ---
 
